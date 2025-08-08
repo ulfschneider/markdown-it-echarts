@@ -137,6 +137,7 @@ function prepareChart(chartDefinition) {
  */
 function renderChart(chartDefinition) {
   try {
+    writeLog("Transforming chart");
     return prepareChart(chartDefinition);
   } catch (err) {
     if (settings.throwOnError) {
@@ -161,7 +162,7 @@ function renderChart(chartDefinition) {
  * @param {Boolean} options.verbose When true, logging is detailed. Default is false.
  * @param {Object} options.defaults The default settings for echarts
  */
-export default function EchartsPlugin(md, options) {
+export default function echartsPlugin(md, options) {
   initialize(options);
   const temp = md.renderer.rules.fence.bind(md.renderer.rules);
   md.renderer.rules.fence = (tokens, idx, options, env, slf) => {
