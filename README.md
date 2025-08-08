@@ -32,8 +32,8 @@ const config = {
 As a result you get the chart code, wrapped into a `figure` tag:
 
 ```html
-<figure id="tifftwsxeckl" class="echarts">
-  <div id="rfisxrzggkaz" class="echarts-container line">
+<figure id="echarts-tifftwsxeckl" class="echarts">
+  <div id="echarts-rfisxrzggkaz" class="echarts-container line">
   </div>
   <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
   <script type="module">

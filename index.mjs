@@ -26,6 +26,10 @@ function enforceLog(message) {
   console.log(chalk.white.bold(`[${pkg.name}]`), message);
 }
 
+function createId() {
+  return "echarts-" + nanoid();
+}
+
 /**
  * Initialize the plugin and create non-existing folders
  * @param {Object} options The settings given to the plugin
@@ -41,8 +45,8 @@ function removeEmptyLines(value) {
 }
 
 function prepareChart(chartDefinition) {
-  const containerId = nanoid();
-  const figureId = nanoid();
+  const containerId = createId();
+  const figureId = createId();
 
   let chartEmbedCode = `<figure id="${figureId}" class="echarts">
   <div id="${containerId}" class="echarts-container">
