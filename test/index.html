@@ -1,0 +1,115 @@
+<figure id="lceqnnamkzdb" class="echarts">
+    <div id="pprksuampghb" class="echarts-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="module">
+        const ctx = document.querySelector("#pprksuampghb");
+        const chart = echarts.init(ctx);
+        function deepMerge(target, ...sources) {
+            for (const source of sources) {
+                for (const k in source) {
+                    let vs = source[k],
+                        vt = target[k];
+                    if (Object(vs) == vs && Object(vt) === vt) {
+                        target[k] = deepMerge(vt, vs);
+                        continue;
+                    }
+                    target[k] = source[k];
+                }
+            }
+            return target;
+        }
+        function applyDefaults(config, defaults) {
+            const isDarkMode = window.matchMedia(
+                "(prefers-color-scheme: dark)",
+            ).matches;
+            if (isDarkMode && defaults.darkMode) {
+                defaults = deepMerge({}, defaults, defaults.darkMode);
+            } else {
+                defaults = deepMerge({}, defaults);
+            }
+            delete defaults.darkMode;
+            let adjustedConfig = deepMerge({}, config);
+            if (defaults.series && adjustedConfig.series) {
+                for (const def in defaults.series) {
+                    for (const conf of adjustedConfig.series) {
+                        conf[def] = deepMerge(
+                            {},
+                            defaults.series[def],
+                            conf[def],
+                        );
+                    }
+                }
+            }
+            delete defaults.series;
+            adjustedConfig = deepMerge(defaults, adjustedConfig);
+            return adjustedConfig;
+        }
+        function renderChart() {
+            try {
+                const width = ctx.clientWidth;
+                const height = ctx.clientHeight;
+                const config = {
+                    title: {
+                        text: "What Voldemort doesn´t have",
+                        left: "center",
+                    },
+                    figcaption: "A simple pie chart",
+                    tooltip: {
+                        trigger: "item",
+                    },
+                    legend: {
+                        orient: "vertical",
+                        right: "right",
+                        top: "middle",
+                    },
+                    series: [
+                        {
+                            type: "pie",
+                            radius: "70%",
+                            itemStyle: {
+                                borderRadius: 10,
+                                borderColor: "#fff",
+                                borderWidth: 2,
+                            },
+                            data: [
+                                { value: 2, name: "Friends" },
+                                { value: 3, name: "Family" },
+                                { value: 45, name: "Nose" },
+                            ],
+                        },
+                    ],
+                };
+                for (const data of config.series) {
+                    ctx.classList.add(data.type);
+                }
+                if (config.figcaption) {
+                    const figure = document.querySelector("#lceqnnamkzdb");
+                    let figcaption = figure.querySelector("figcaption");
+                    if (!figcaption) {
+                        figcaption = document.createElement("figcaption");
+                        figcaption.innerHTML = config.figcaption;
+                        figure.appendChild(figcaption);
+                    }
+                }
+                const adjustedConfig = applyDefaults(config, {
+                    font: {
+                        fontFamily: "iA Writer Quattro,system-ui,sans-serif",
+                    },
+                });
+                chart.setOption(adjustedConfig);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        renderChart();
+        const resizeObserver = new ResizeObserver(() => {
+            requestAnimationFrame(() => {
+                chart.resize();
+                renderChart();
+            });
+        });
+        resizeObserver.observe(ctx);
+        const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        darkModeQuery.addEventListener("change", renderChart);
+    </script>
+</figure>

@@ -1,0 +1,29 @@
+{
+  "name": "@ulfschneider/markdown-it-echarts",
+  "version": "0.1.0",
+  "description": "A markdown-it plugin to render echarts",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "node ./test/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ulfschneider/markdown-it-echarts"
+  },
+  "keywords": [
+    "markdown",
+    "markdown-it",
+    "plugin",
+    "echarts",
+    "diagram"
+  ],
+  "author": "Ulf Schneider",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "nanoid": "^5.1.5"
+  },
+  "devDependencies": {
+    "markdown-it": "^14.1.0"
+  }
+}
