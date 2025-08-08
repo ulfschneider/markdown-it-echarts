@@ -1,4 +1,4 @@
-# markdown-it-echarts
+# markdown-it-responsive-echarts
 
 A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to transform render [echarts](https://echarts.apache.org/) diagram definitions.
 

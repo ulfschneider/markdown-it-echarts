@@ -1,5 +1,5 @@
 {
-  "name": "@ulfschneider/markdown-it-echarts",
+  "name": "markdown-it-responsive-echarts",
   "version": "0.1.0",
   "description": "A markdown-it plugin to render echarts",
   "main": "index.mjs",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ulfschneider/markdown-it-echarts"
+    "url": "https://github.com/ulfschneider/markdown-it-responsive-echarts"
   },
   "keywords": [
     "markdown",
