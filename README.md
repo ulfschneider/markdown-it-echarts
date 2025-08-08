@@ -5,7 +5,7 @@ A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to transform 
 In your Markdown, describe the echarts chart within a fenced codeblock, introduced with the `echarts` keyword.
 
 > [!NOTE]
-> It is mandatory to to create an object named `config` that holds your chart definition.
+> It is mandatory to create an object named `config` that holds your chart definition.
 > You cannot choose a different name!
 
 ~~~markdown
