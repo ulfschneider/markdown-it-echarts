@@ -45,9 +45,9 @@ As a result you get the chart code, wrapped into a `figure` tag:
 
 Notice how the `figcaption` is created from the `config.figcaption` property.
 
-Your charts will react to light mode and dark mode when you define `darkMode` settings within your `defaults` settings property. Please refer to options section further down.
+Your charts will react to light mode and dark mode when you define the `darkMode` settings within your `defaults` settings property. Please refer to the options section further down.
 
-The diagram types of all data series in the diagram are added as CSS class names to the echarts container. In the example above you see `echarts-container line`, because we are rendering a line chart. You can use that information for the CSS styling of your diagrams.
+The diagram types of all data series in the diagram are added as CSS class names to the echarts container. In the example above you see `echarts-container line`, because we are preparing a line chart. You can use that information for the CSS styling of your diagrams.
 
 The plugin will make your charts responsive by default, but it is important to start with proper `width` and `height` settings for the echarts container, othwerwise you end up with a container that does have zero width or zero height and you won´t be able to see any diagram. You can for example do something like:
 
@@ -101,14 +101,6 @@ Here is an example for settings that apply a default styling to the echart diagr
 ```js
 mdLib.use(markdownItEcharts, {
   defaults: {
-    color: [
-      "#007affa0",
-      "#ffa500a0",
-      "#008000a0",
-      "#9370DBa0",
-      "#FFD700a0",
-      "#ff0000a0",
-    ],
     aria: {
       show: true,
     },
@@ -120,29 +112,29 @@ mdLib.use(markdownItEcharts, {
     },
     title: {
       textStyle: {
-        color: "#262626",
+        color: "#000",
       },
     },
     legend: {
       textStyle: {
-        color: "#262626",
+        color: "#000",
       },
     },
     textStyle: {
-      color: "#262626",
+      color: "#000",
     },
     series: {
       label: {
         show: true,
         textStyle: {
-          color: "#262626",
+          color: "#000",
         },
       },
       markPoint: {
         label: {
           show: true,
           textStyle: {
-            color: "#262626",
+            color: "#000",
           },
         },
       },
@@ -150,27 +142,27 @@ mdLib.use(markdownItEcharts, {
     darkMode: {
       title: {
         textStyle: {
-          color: "#c3c3c3",
+          color: "#fff",
         },
       },
       textStyle: {
-        color: "#c3c3c3",
+        color: "#fff",
       },
       legend: {
         textStyle: {
-          color: "#c3c3c3",
+          color: "#fff",
         },
       },
       series: {
         label: {
           textStyle: {
-            color: "#c3c3c3",
+            color: "#fff",
           },
         },
         markPoint: {
           label: {
             textStyle: {
-              color: "#c3c3c3",
+              color: "#fff",
             },
           },
         },
