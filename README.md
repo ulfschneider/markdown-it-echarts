@@ -47,8 +47,6 @@ As a result you get the chart code, wrapped into a `figure` tag:
 
 Notice how the `figcaption` is created from the `config.figcaption` property.
 
-It is possible to set the ECharts renderer on a per-chart basis with `config.renderer` as well as for all charts in the `defaults.renderer` property. The renderer can be either `"canvas"` (default), or `"svg"`.
-
 The diagram types of all data series in the diagram are added as CSS class names to the ECharts container. In the example above you see `echarts-container line`, because we are preparing a line chart. You can use that information for the CSS styling of your diagrams.
 
 The plugin will make your charts responsive by default, but it is important to start with proper `width` and `height` settings for the ECharts container, othwerwise you end up with a container that does have zero width or zero height and you won´t be able to see any diagram. You can for example do something like:
@@ -66,9 +64,9 @@ The plugin will make your charts responsive by default, but it is important to s
 }
 ```
 
-Your charts will react to light mode and dark mode when you have `defaults.darkMode` settings, which will be applied when automatically when dark mode is detected.
-
 The settings to be applied to all `series` of all charts can be defined in the `defaults.series` settings object.
+
+Your charts will react to light mode and dark mode when you have `defaults.darkModeConfig` settings defined. In that case `darkModeConfig` will be applied automatically to each chart by the plugin when dark mode is active.
 
 ## Install
 
@@ -98,18 +96,27 @@ md.use(markdownItECharts, markdownItEChartsOptions)
 - `echarts`: The location of the ECharts library code. You might host the code on your own server and would have to adapt this setting in that case to point to that location.
 - `throwOnError`: A value of `true` will throw errors that occurred during processing. A value of `false` will only log errors. Default value is `false`.
 - `verbose`: A value of `true` will activate detailed logging. Default is `false`.
-- `defaults` : The default settings to be applied to all echart diagrams prepared by the plugin. Use it exactly how you would set options for an echart. There are some specialities that expand the defaults:
-  1. The `series` property, which you can use to make settings that belong to all series used in your chart.
-  2. The `darkMode` property, which you can use for dark mode settings. Dark mode is automatically detected during runtime and the settings you define here are applied to the chart. `darkMode` can also contain a `series` property which is used for settings that should be applied to all series of a chart when dark mode is active.
-  3. The `renderer` property, wich controls how the charts are rendered. It can be either `"canvas"` or `"svg"`. The default setting is `"canvas"`. You can set the renderer as well on a per-chart basis via the `config` object.
+- `defaults` : Optional. The default settings to be applied to all echart diagrams prepared by the plugin. Use it exactly how you would set options for an echart. There are some specialities that expand the defaults:
+  - The optional `series` property, which you can use to make settings that belong to all series used in your chart.
+  - The optional `darkModeConfig` property, which you can use for dark mode settings. Dark mode is automatically detected during runtime and the settings you define here are applied to the chart. `darkModeConfig` can also contain a `series` property which is used for settings that should be applied to all series of a chart when dark mode is active.
+  - The optional `renderOptions` property, wich controls how all charts are rendered. You can define a `renderOptions` object as well inside of the chart config, which will apply the `renderOptions` to that single chart only. In either case, `renderOptions` can contain any of the following properties:
+    - `renderer`: Optional. Default is `"canvas"`. It can be either `"canvas"` or `"svg"`.
+    - `debounceMillis`: Optional. Default is `16`. A debounce timeout in milliseconds for repeated rendering of charts, which for instance is done continuously when resizing the browser window.
+    - `notMerge`:  Optional. Please refer to https://echarts.apache.org/en/api.html#echartsInstance.setOption.
+    - `replaceMerge`: Optional. Please refer to https://echarts.apache.org/en/api.html#echartsInstance.setOption.
+    - `lazyUpdate`: Optional. Please refer to https://echarts.apache.org/en/api.html#echartsInstance.setOption.
+    - `silent`: Optional. Please refer to https://echarts.apache.org/en/api.html#echartsInstance.setOption.
 
-Here is an example for default settings that will be applied to all echart diagrams. These settings ensure the charts respond to changes from light mode to dark mode and the charts are rendered in SVG format:
+
+Here is an example for the initialization of the plugin with settings that will be applied to all echart diagrams. These settings ensure the charts respond to changes from light mode to dark mode and the charts are rendered in SVG format:
 
 ```js
 mdLib.use(markdownItEcharts, {
   verbose: true,
   defaults: {
-    renderer: "svg",
+    renderOptions: {
+      renderer: "svg"
+    },
     aria: {
       show: true,
     },
@@ -148,7 +155,7 @@ mdLib.use(markdownItEcharts, {
         },
       },
     },
-    darkMode: {
+    darkModeConfig: {
       title: {
         textStyle: {
           color: "#fff",

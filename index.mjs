@@ -53,6 +53,14 @@ function prepareChart(chartDefinition) {
   </div>
   <script src="${settings.echarts}"></script>
   <script type="module">
+  function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+      const context = this;
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(context, args), delay);
+    }
+  }
   function deepMerge(target, ...sources) {
     for (const source of sources) {
       for (const k in source) {
@@ -69,15 +77,15 @@ function prepareChart(chartDefinition) {
   function applyDefaults(defaults, config) {
      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
      let adjustedConfig;
-     if (isDarkMode && defaults.darkMode) {
-       defaults = deepMerge({}, defaults, defaults.darkMode);
-       delete defaults.darkMode;
-       adjustedConfig = deepMerge({}, config, config.darkMode);
-       delete config.darkMode;
+     if (isDarkMode && defaults.darkModeConfig) {
+       defaults = deepMerge({}, defaults, defaults.darkModeConfig);
+       adjustedConfig = deepMerge({}, config, config.darkModeConfig);
      } else {
        defaults = deepMerge({}, defaults);
        adjustedConfig = deepMerge({}, config);
      }
+     delete defaults.darkModeConfig;
+     delete adjustedConfig.darkModeConfig;
      if (defaults.series && adjustedConfig.series) {
        for (const def in defaults.series) {
          for (const conf of adjustedConfig.series) {
@@ -94,25 +102,26 @@ function prepareChart(chartDefinition) {
   }
   function adjustConfig() {
     const defaults = getDefaults();
-    const ctx = document.querySelector("#${containerId}");
-    const width = ctx.clientWidth; //might be used by chart definition
-    const height = ctx.clientHeight; //might be used by chart definition
-    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;  //might be used by chart definition
+    const ctx = document.querySelector("#${containerId}"); //might be used by chart config
+    const width = ctx.clientWidth; //might be used by chart config
+    const height = ctx.clientHeight; //might be used by chart config
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;  //might be used by chart config
     ${chartDefinition}
     return applyDefaults(defaults, config);
   }
-  //chart
+  //create chart instance
   const ctx = document.querySelector("#${containerId}");
-  const config = adjustConfig()
+  let config = adjustConfig()
   let chart;
-  if (config.renderer) {
-    chart = echarts.init(ctx, null, { renderer: config.renderer });
+  if (config.renderOptions?.renderer) {
+    chart = echarts.init(ctx, null, { renderer: config.renderOptions.renderer });
   } else {
     chart = echarts.init(ctx);
   }
   function renderChart() {
     try {
       const config = adjustConfig();
+      ctx.setAttribute('class','echarts-container');
       for(const data of config.series) {
         ctx.classList.add(data.type);
       }
@@ -125,21 +134,27 @@ function prepareChart(chartDefinition) {
         }
         figcaption.innerHTML = config.figcaption;
       }
-      chart.setOption(config);
+      const renderOptions = config?.renderOptions
+      delete config?.figcaption;
+      delete config?.renderOptions;
+      chart.setOption(config, renderOptions);
     } catch (err) {
       console.error(err);
     }
   }
   renderChart();
-  const resizeObserver = new ResizeObserver(() => {
-    requestAnimationFrame(() => {
+  const debouncedRender = debounce(() => {
       chart.resize();
       renderChart();
+    }, config.renderOptions?.debounceMillis || 16);
+  const resizeObserver = new ResizeObserver(() => {
+    requestAnimationFrame(() => {
+      debouncedRender();
     });
   });
   resizeObserver.observe(ctx);
   const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  darkModeQuery.addEventListener('change', renderChart);
+  darkModeQuery.addEventListener('change', debouncedRender);
   </script>
 </figure>`;
   return removeEmptyLines(chartEmbedCode);
