@@ -1,7 +1,7 @@
 {
   "name": "markdown-it-responsive-echarts",
-  "version": "0.2.1",
-  "description": "A markdown-it plugin to render echarts",
+  "version": "0.2.2",
+  "description": "A markdown-it plugin to render ECharts diagram definitions",
   "main": "index.mjs",
   "scripts": {
     "test": "node ./test/index.mjs"

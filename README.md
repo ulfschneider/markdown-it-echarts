@@ -1,6 +1,6 @@
 # markdown-it-responsive-echarts
 
-A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to render [echarts](https://echarts.apache.org/) diagram definitions.
+A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to render [ECharts](https://echarts.apache.org/) diagram definitions.
 
 In your Markdown, describe the chart within a fenced codeblock, introduced with the `echarts` keyword.
 
@@ -47,11 +47,11 @@ As a result you get the chart code, wrapped into a `figure` tag:
 
 Notice how the `figcaption` is created from the `config.figcaption` property.
 
-It is possible to set the echarts renderer on a per-chart basis with `config.renderer` as well as for all charts in the `defaults.renderer` property. The renderer can be either `"canvas"` (default), or `"svg"`.
+It is possible to set the ECharts renderer on a per-chart basis with `config.renderer` as well as for all charts in the `defaults.renderer` property. The renderer can be either `"canvas"` (default), or `"svg"`.
 
-The diagram types of all data series in the diagram are added as CSS class names to the echarts container. In the example above you see `echarts-container line`, because we are preparing a line chart. You can use that information for the CSS styling of your diagrams.
+The diagram types of all data series in the diagram are added as CSS class names to the ECharts container. In the example above you see `echarts-container line`, because we are preparing a line chart. You can use that information for the CSS styling of your diagrams.
 
-The plugin will make your charts responsive by default, but it is important to start with proper `width` and `height` settings for the echarts container, othwerwise you end up with a container that does have zero width or zero height and you won´t be able to see any diagram. You can for example do something like:
+The plugin will make your charts responsive by default, but it is important to start with proper `width` and `height` settings for the ECharts container, othwerwise you end up with a container that does have zero width or zero height and you won´t be able to see any diagram. You can for example do something like:
 
 ```css
 .echarts-container {
@@ -77,25 +77,25 @@ The settings to be applied to all `series` of all charts can be defined in the `
 ## Use
 
 ```js
-import markdownItEcharts from 'markdown-it-responsive-echarts'
+import markdownItECharts from 'markdown-it-responsive-echarts'
 import markdownIt from 'markdown-it'
 
 const md = markdownIt()
 
 //default settings
-const markdownItEchartsOptions = {
+const markdownItEChartsOptions = {
   echarts: "https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js",
   throwOnError: false,
   verbose: false,
   defaults: {},
 };
 
-md.use(markdownItEcharts, markdownItEchartsOptions)
+md.use(markdownItECharts, markdownItEChartsOptions)
 ```
 
 ## Options
 
-- `echarts`: The location of the echarts library code. You might host the code on your own server and would have to adapt this setting in that case to point to that location.
+- `echarts`: The location of the ECharts library code. You might host the code on your own server and would have to adapt this setting in that case to point to that location.
 - `throwOnError`: A value of `true` will throw errors that occurred during processing. A value of `false` will only log errors. Default value is `false`.
 - `verbose`: A value of `true` will activate detailed logging. Default is `false`.
 - `defaults` : The default settings to be applied to all echart diagrams prepared by the plugin. Use it exactly how you would set options for an echart. There are some specialities that expand the defaults:

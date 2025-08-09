@@ -170,16 +170,16 @@ function renderChart(chartDefinition) {
 }
 
 /**
- * A plugin to transform echarts chart definitions with markdown-it
+ * A plugin to transform ECharts chart definitions with markdown-it
  *
  * @param {Object} md The markdown instance
  * @param {Object} options The settings of the plugin, optional
- * @param {String} options.echarts The location of the echarts library.
+ * @param {String} options.echarts The location of the ECharts library.
  *   Default is https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js
  * @param {Boolean} options.throwOnError A value of true means errors are not catched and instead thrown.
  *   A value of false will catch and log errors. Default value is false.
  * @param {Boolean} options.verbose When true, logging is detailed. Default is false.
- * @param {Object} options.defaults The default settings for echarts
+ * @param {Object} options.defaults The default settings for ECharts
  */
 export default function echartsPlugin(md, options) {
   initialize(options);
