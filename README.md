@@ -1,6 +1,6 @@
 # markdown-it-responsive-echarts
 
-A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to render [ECharts](https://echarts.apache.org/) diagram definitions.
+A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to render responsive [ECharts](https://echarts.apache.org/) diagram definitions that react to light mode and dark mode.
 
 In your Markdown, describe the chart within a fenced codeblock, introduced with the `echarts` keyword.
 
@@ -11,7 +11,9 @@ In your Markdown, describe the chart within a fenced codeblock, introduced with 
 ~~~markdown
 ```echarts
 const config = {
-  renderer: "svg",
+  renderOptions: {
+    renderer: "svg"
+  },
   figcaption: 'This is the most simple line chart rendered by echarts',
   xAxis: {
     type: 'category',
