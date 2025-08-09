@@ -53,8 +53,6 @@ function prepareChart(chartDefinition) {
   </div>
   <script src="${settings.echarts}"></script>
   <script type="module">
-  const ctx = document.querySelector("#${containerId}");
-  const chart = echarts.init(ctx);
   function deepMerge(target, ...sources) {
     for (const source of sources) {
       for (const k in source) {
@@ -68,15 +66,18 @@ function prepareChart(chartDefinition) {
     }
     return target
   }
-  function applyDefaults(config, defaults) {
+  function applyDefaults(defaults, config) {
      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+     let adjustedConfig;
      if (isDarkMode && defaults.darkMode) {
        defaults = deepMerge({}, defaults, defaults.darkMode);
+       delete defaults.darkMode;
+       adjustedConfig = deepMerge({}, config, config.darkMode);
+       delete config.darkMode;
      } else {
        defaults = deepMerge({}, defaults);
+       adjustedConfig = deepMerge({}, config);
      }
-     delete defaults.darkMode;
-     let adjustedConfig = deepMerge({}, config);
      if (defaults.series && adjustedConfig.series) {
        for (const def in defaults.series) {
          for (const conf of adjustedConfig.series) {
@@ -88,11 +89,30 @@ function prepareChart(chartDefinition) {
      adjustedConfig = deepMerge(defaults, adjustedConfig);
      return adjustedConfig;
   }
+  function getDefaults() {
+    return ${JSON.stringify(settings.defaults)};
+  }
+  function adjustConfig() {
+    const defaults = getDefaults();
+    const ctx = document.querySelector("#${containerId}");
+    const width = ctx.clientWidth; //might be used by chart definition
+    const height = ctx.clientHeight; //might be used by chart definition
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;  //might be used by chart definition
+    ${chartDefinition}
+    return applyDefaults(defaults, config);
+  }
+  //chart
+  const ctx = document.querySelector("#${containerId}");
+  const config = adjustConfig()
+  let chart;
+  if (config.renderer) {
+    chart = echarts.init(ctx, null, { renderer: config.renderer });
+  } else {
+    chart = echarts.init(ctx);
+  }
   function renderChart() {
     try {
-      const width = ctx.clientWidth;
-      const height = ctx.clientHeight;
-      ${chartDefinition}
+      const config = adjustConfig();
       for(const data of config.series) {
         ctx.classList.add(data.type);
       }
@@ -101,12 +121,11 @@ function prepareChart(chartDefinition) {
         let figcaption = figure.querySelector('figcaption');
         if (!figcaption) {
           figcaption = document.createElement('figcaption');
-          figcaption.innerHTML = config.figcaption;
           figure.appendChild(figcaption);
         }
+        figcaption.innerHTML = config.figcaption;
       }
-      const adjustedConfig = applyDefaults(config, ${JSON.stringify(settings.defaults)});
-      chart.setOption(adjustedConfig);
+      chart.setOption(config);
     } catch (err) {
       console.error(err);
     }
