@@ -1,8 +1,8 @@
 # markdown-it-responsive-echarts
 
-A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to transform render [echarts](https://echarts.apache.org/) diagram definitions.
+A [markdown-it](https://github.com/markdown-it/markdown-it) plugin to render [echarts](https://echarts.apache.org/) diagram definitions.
 
-In your Markdown, describe the echarts chart within a fenced codeblock, introduced with the `echarts` keyword.
+In your Markdown, describe the chart within a fenced codeblock, introduced with the `echarts` keyword.
 
 > [!NOTE]
 > It is mandatory to create an object named `config` that holds your chart definition.
